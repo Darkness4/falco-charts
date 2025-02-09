@@ -54,7 +54,7 @@ spec:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .Values.imagePullSecrets }}
-  imagePullSecrets: 
+  imagePullSecrets:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- if eq .Values.driver.kind "gvisor" }}
@@ -175,7 +175,7 @@ spec:
           name: docker-socket
         {{- end }}
         {{- if .containerd.enabled }}
-        - mountPath: /host/run/containerd/
+        - mountPath: /host{{ dir .containerd.socket }}
           name: containerd-socket
         {{- end }}
         {{- if .crio.enabled }}
@@ -245,7 +245,7 @@ spec:
     {{- end }}
     - name: root-falco-fs
       emptyDir: {}
-    {{- if .Values.driver.enabled }}  
+    {{- if .Values.driver.enabled }}
     - name: boot-fs
       hostPath:
         path: /boot
@@ -310,7 +310,7 @@ spec:
       emptyDir: {}
     {{- end }}
     - name: falcoctl-config-volume
-      configMap: 
+      configMap:
         name: {{ include "falco.fullname" . }}-falcoctl
         items:
           - key: falcoctl.yaml
